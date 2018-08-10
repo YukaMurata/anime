@@ -15,6 +15,7 @@ class Animation {
         this.textAnimation();
         this.svgAnimation();
         this.itemFade();
+        this.lineAnimation();
     }
 
     cssSelector() {
@@ -90,36 +91,29 @@ class Animation {
     }
 
     textAnimation() {
-        $('.ml1 .letters').each(function () {
-            $(this).html($(this).text().replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>"));
-        });
-        anime.timeline({loop: true})
+        // $('.ml1 .letters').each(function () {
+        //     $(this).html($(this).text().replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>"));
+        // });
+        anime.timeline({loop: false})
             .add({
-                targets: '.ml1 .letter',
-                scale: [0.3, 1],
-                opacity: [0, 1],
-                translateZ: 0,
-                easing: "easeOutExpo",
-                duration: 600,
-                delay: function (el, i) {
-                    return 70 * (i + 1)
-                }
-            }).add({
             targets: '.ml1 .line',
             scaleX: [0, 1],
             opacity: [0.5, 1],
             easing: "easeOutExpo",
             duration: 700,
-            offset: '-=875',
             delay: function (el, i, l) {
-                return 80 * (l - i);
+                return 80 * (l + i);
             }
         }).add({
-            targets: '.ml1',
-            opacity: 0,
-            duration: 1000,
+            targets: '.ml1 .letters',
+            opacity: [0, 1],
+            translateZ: 0,
             easing: "easeOutExpo",
-            delay: 1000
+            duration: 600,
+            offset: '-=875',
+            delay: function (el, i) {
+                return 70 * (i + 1) + 700
+            }
         });
     }
 
@@ -159,6 +153,18 @@ class Animation {
                 return index * 2000;
             }
         })
+    }
+
+    lineAnimation(){
+        anime({
+            targets: '#line .line',
+            scaleX: [0, 1],
+            opacity: [0, 1],
+            easing: "easeOutExpo",
+            duration: 700,
+            delay: 400
+        });
+
     }
 
 }
